@@ -1,0 +1,4 @@
+# platform-api/.gitignore
+
+# Ignore score-k8s generated manifests
+.score-k8s/

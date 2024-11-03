@@ -1,0 +1,11 @@
+# Set the Kubernetes context (optional)
+# k8s_yaml('k8s/deployment.yaml', 'k8s/service.yaml')
+
+# Load Kubernetes manifests
+k8s_yaml(['k8s/deployment.yaml', 'k8s/service.yaml'])
+
+# Define the Docker build
+docker_build('other-api', '.')
+
+# Specify the resource and trigger auto-deploy on code changes
+k8s_resource('other-api', port_forwards=8081)

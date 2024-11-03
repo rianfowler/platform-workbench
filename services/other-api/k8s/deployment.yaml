@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: other-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: other-api
+  template:
+    metadata:
+      labels:
+        app: other-api
+    spec:
+      containers:
+        - name: other-api
+          image: other-api:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: "8080"

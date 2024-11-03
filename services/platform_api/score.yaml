@@ -1,0 +1,15 @@
+apiVersion: score.dev/v1b1
+
+metadata:
+  name: platform-api
+
+containers:
+  platform-api-container:
+    image: platform-api:dev
+
+service:
+  ports:
+    api:
+      port: 80
+      targetPort: 8080
+      protocol: TCP

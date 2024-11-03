@@ -1,0 +1,52 @@
+# Set the Kubernetes context (optional)
+# k8s_yaml('k8s/deployment.yaml', 'k8s/service.yaml')
+
+watch_settings(ignore=['.score-k8s/'])
+workload_name = decode_yaml(read_file('score.yaml'))["metadata"]["name"]
+print(workload_name)
+
+# Define the image name
+platform_api_image = workload_name + ':dev'
+
+# Define the output directory for generated manifests
+GENERATED_DIR = '.score-k8s/output'
+GENERATED_FILE = 'manifest.yaml'
+GENERATED_PATH = GENERATED_DIR + '/' + GENERATED_FILE
+
+# Ensure the generated directory exists
+local('mkdir -p {}'.format(GENERATED_DIR))
+
+local('score-k8s init')
+local('score-k8s generate score.yaml -o {}'.format(GENERATED_PATH))
+
+# Load Kubernetes manifests
+# k8s_yaml(['k8s/deployment.yaml', 'k8s/service.yaml'])
+k8s_yaml(GENERATED_PATH)
+
+# # Define the Docker build
+# docker_build('platform-api', '.')
+
+# Local resource to build the image using Pack CLI
+build_resource = 'build-' + workload_name
+local_resource(
+  build_resource,
+  'pack build platform-api:dev --path . --builder heroku/builder:24',
+  deps=['main.go'],
+  labels=[workload_name]
+)
+
+generate_k8s_resource = 'generate-k8s-' + workload_name
+local_resource(
+  generate_k8s_resource,
+  'score-k8s generate score.yaml -o {}'.format(GENERATED_PATH),
+  deps=['score.yaml'],
+  labels=[workload_name]
+)
+
+# Specify the resource and trigger auto-deploy on code changes
+k8s_resource(workload_name,
+  port_forwards=8080,
+  resource_deps=[build_resource, generate_k8s_resource],
+  labels=[workload_name]
+)
+
