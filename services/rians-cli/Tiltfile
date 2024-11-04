@@ -1,16 +1,9 @@
 local_resource(
-    name="build-rians-cli-image",
-    cmd="docker build -t rians-cli-image:latest .",
-    deps=['main.go', 'cmd/'],  # Add other dependencies if needed
-    labels=["platform-cli"],
-)
-
-local_resource(
     # name="build-cli-%s-%s" % (os, arch),
     # cmd='docker run --rm -v $PWD:/workspace -w /workspace golang:1.23 /bin/sh -c "GOOS=%s GOARCH=%s go build -o build/%s main.go"' % (os, arch, output_name),
-    name="install-rians-cli-GO-REQUIRED",
+    name="install-rians-cli",
     cmd="go install",
-    # deps=['main.go', 'cmd/'],  # Add other dependencies as needed
+    # deps=['main.go', 'cmd/'],  # uncomment to trigger auto update of cli- this will overwrite your normal install
     labels=["platform-cli"],
     auto_init=False
 )
