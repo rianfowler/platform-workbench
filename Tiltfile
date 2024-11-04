@@ -7,6 +7,7 @@ SERVICES_DIR = 'services'
 services = [
     'other-api',
     'platform_api',
+    'rians-cli'
 ]
 
 # Iterate over each service and include its Tiltfile
