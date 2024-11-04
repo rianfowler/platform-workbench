@@ -1,7 +1,7 @@
 local_resource(
     name="build-rians-cli-image",
     cmd="docker build -t rians-cli-image:latest .",
-    # deps=['main.go', 'cmd/'],  # Add other dependencies if needed
+    deps=['main.go', 'cmd/'],  # Add other dependencies if needed
     labels=["platform-cli"],
 )
 
@@ -10,7 +10,7 @@ local_resource(
     # cmd='docker run --rm -v $PWD:/workspace -w /workspace golang:1.23 /bin/sh -c "GOOS=%s GOARCH=%s go build -o build/%s main.go"' % (os, arch, output_name),
     name="install-rians-cli-GO-REQUIRED",
     cmd="go install",
-    deps=['main.go', 'cmd/'],  # Add other dependencies as needed
+    # deps=['main.go', 'cmd/'],  # Add other dependencies as needed
     labels=["platform-cli"],
     auto_init=False
 )

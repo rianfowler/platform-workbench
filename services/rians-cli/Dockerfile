@@ -14,14 +14,9 @@ COPY . .
 # Build the CLI binary with the correct name
 RUN go build -o rians-cli main.go
 
-# Use a minimal image for the final output
-FROM alpine:latest
-
-# Install any necessary runtime dependencies (optional)
-RUN apk --no-cache add ca-certificates
-
-# Copy the binary from the builder stage
+# Final stage using a Debian-based image for compatibility
+FROM debian:latest
+RUN apt-get update && apt-get install -y ca-certificates
 COPY --from=builder /app/rians-cli /usr/local/bin/rians-cli
-
-# Set the entrypoint to the CLI
+WORKDIR /workspace
 ENTRYPOINT ["rians-cli"]
