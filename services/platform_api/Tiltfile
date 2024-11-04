@@ -43,6 +43,14 @@ local_resource(
   labels=[workload_name]
 )
 
+test_cli_resource = 'test-cli-run-' + workload_name
+local_resource(
+  test_cli_resource,
+  'rians-cli --help',
+  deps=['score.yaml'],
+  labels=[workload_name],
+)
+
 # Specify the resource and trigger auto-deploy on code changes
 k8s_resource(workload_name,
   port_forwards=8080,

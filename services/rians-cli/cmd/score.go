@@ -11,7 +11,7 @@ import (
 // scoreCmd represents the score command
 var scoreCmd = &cobra.Command{
 	Use:   "score",
-	Short: "Run the score-k8s CLI from your custom CLI. test6",
+	Short: "Run the score-k8s CLI from your custom CLI. test7",
 	Long:  `This subcommand wraps the score-k8s CLI and forwards commands to it.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Create the command to call score-k8s
